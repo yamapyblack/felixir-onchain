@@ -1,0 +1,13 @@
+.DS_Store
+*.swp
+
+#node yarn
+.envrc
+node_modules
+yarn-error.log
+yarn-debug.log*
+
+cache
+artifacts
+typechain
+
