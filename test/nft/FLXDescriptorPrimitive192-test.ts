@@ -2,6 +2,7 @@ import "@nomiclabs/hardhat-waffle";
 import { ethers } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 import { encode } from "../../scripts/svg/encoder";
+import { palette192 } from "../../scripts/palette192"
 import { promises as fs } from "fs";
 import { expect, use } from 'chai'
 import path from "path";
@@ -42,57 +43,45 @@ describe("FLXDescriptorPrimitive-test", async () => {
   });
 
   describe("test", async () => {
-    it("fail setToken", async () => {
-      await expect(c.connect(addr1).setToken(addr1.address)).reverted
-    });
+    it("success", async () => {
 
-    it("success setToken", async () => {
-      await c.setToken(addr1.address)
-      expect(await c.token()).equals(addr1.address)
-    });
-
-    // it("success generateImage", async () => {
-    //   const encodeJson = await encode(INPUT_SVG_FILE);
-    //   const palettes = encodeJson.palette;
-    //   palettes.shift(); // Nounsのだと先頭が空になるため、先頭削除
-    //   const seed = encodeJson.images.root[0].data;
-    //   console.log(palettes)
-
-    //   await c.addBulkColorsToPalette(0, palettes);
-    //   await c.setSeed(0, seed);
-
-    //   const svg = await c.generateImage(0);
-    //   const svg2 = ethers.utils.toUtf8String(ethers.utils.base64.decode(svg));
-    //   console.log(svg2)
-    //   await fs.writeFile(OUT_SVG_FILE, svg2);
-    // });
-
-    it("success all generateImage", async () => {
-
-      for(let i = 0; i < 48; i++){
-        const INPUT_SVG_FILE_ALL = "images/" + (i+1) + ".png"
-
-        const encodeJson = await encode(INPUT_SVG_FILE_ALL);
-        const palettes = encodeJson.palette;
-        palettes.shift(); // Nounsのだと先頭が空になるため、先頭削除
-        const seed = encodeJson.images.root[0].data;
-        console.log(palettes)
-  
-        console.log(i)
-        await c.addBulkColorsToPalette(i, palettes);
-        await c.setSeed(i, seed);  
+      //palette
+      let indexes_ = []
+      let palettes_ = []
+    
+      for(let i = 0; i < palette192.length; i++){
+        console.log("i",i)
+        indexes_.push(i)
+        palettes_.push(palette192[i])
+    
+        // await c0.addBulkColorsToPalette(i, palette3072[i]);
+    
+        if(i % 4 == 3){
+          console.log("i % 4",i % 4)
+          await c.addBulkBulkColorsToPalette(indexes_, palettes_);
+          indexes_ = []
+          palettes_ = []    
+        }    
       }
 
-      // const s = await c.seeds(14)
-      // console.log(s)
-      // const p = await c.palettes(14,0)
-      // console.log(p)
+      //seed
+      for(let i = 0; i < 12; i++){
+        const INPUT_SVG_FILE_ALL = "images/" + (i*4 +1) + ".png"
+    
+        const encodeJson = await encode(INPUT_SVG_FILE_ALL);
+    
+        const seed = encodeJson.images.root[0].data;
+        console.log(seed)
+        await c.setSeed(i,seed)
+      }
+    
+      c2.mint(owner.address, 11)
 
-      const svg = await c.generateImage(0);
-      // console.log(svg)
-      const svg2 = ethers.utils.toUtf8String(ethers.utils.base64.decode(svg));
+      const svg = await c.tokenURI(11);
+      console.log(svg)
+      // const svg2 = ethers.utils.toUtf8String(ethers.utils.base64.decode(svg));
       // console.log(svg2)
-      await fs.writeFile(OUT_SVG_FILE, svg2);
+      // await fs.writeFile(OUT_SVG_FILE, svg2);
 
     });
 

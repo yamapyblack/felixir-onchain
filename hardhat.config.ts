@@ -25,25 +25,10 @@ const config: HardhatUserConfig = {
       chainId: 336,
       accounts: accounts(),
     },
-    mumbai: { // matic testnet
-      url: "https://rpc-mumbai.maticvigil.com/",
-      chainId: 80001,
-      gasPrice: 30000000000,
-    },
-    matic: {
-      url: `https://polygon-mainnet.infura.io/v3/${process.env.INFURA_KEY}`,
-      // url: 'https://polygon-rpc.com/',
-      chainId: 137,
-      gasPrice: 381000000000,
+    astar: {
+      url: 'https://rpc.astar.network:8545',
+      chainId: 592,
       accounts: accounts(),
-    },
-    optest: {
-      url: "https://kovan.optimism.io",
-      chainId: 69,
-    },
-    op: {
-      url: "https://mainnet.optimism.io",
-      chainId: 10,
     },
   },
   solidity: {

@@ -14,10 +14,12 @@ contract FLXDescriptorPrimitive is FLXDescriptor {
 
     constructor() {}
 
-    uint8 constant CAP = 192;
+    uint8 constant CHARA = 12;
+    uint constant COLORS = 16;
     string constant PREFIX1 = "PREFIX1";
     string constant PREFIX2 = "PREFIX2";
     string constant PREFIX3 = "PREFIX3";
+    string constant PREFIX4 = "PREFIX4";
 
     string[] ATTRIBUTES = ['tribe', 'guardian beast', 'felix word'];
     bool[] IS_INT = [false, false, false, false];
@@ -120,7 +122,7 @@ contract FLXDescriptorPrimitive is FLXDescriptor {
         override
         returns (string memory)
     {
-        return string(abi.encodePacked(NAMES[getSeedIdx(_tokenId) / 16], _tokenId.toString()));
+        return string(abi.encodePacked(NAMES[getSeedIdx(_tokenId)], " #", _tokenId.toString()));
     }
 
     function generateDescription(uint256 _tokenId)
@@ -129,11 +131,13 @@ contract FLXDescriptorPrimitive is FLXDescriptor {
         override
         returns (string memory)
     {
-        return TRIBES[getSeedIdx(_tokenId) / 16];
+        return DESCRIPTIONS[getSeedIdx(_tokenId)];
+
+        return string(abi.encodePacked(NAMES[getSeedIdx(_tokenId)], " #", _tokenId.toString()));
     }
 
     function getSeedIdx(uint _tokenId) private view returns(uint8){
-        return uint8(random(_tokenId, PREFIX1) % CAP);
+        return uint8(random(_tokenId, PREFIX1) % CHARA);
     }
 
     function getSeedAndPalettes(uint256 _tokenId)
@@ -145,7 +149,12 @@ contract FLXDescriptorPrimitive is FLXDescriptor {
         // console.log(getSeedIdx(_tokenId));
         // console.log(seeds[getSeedIdx(_tokenId)]);
         // console.log(palettes[getSeedIdx(_tokenId)][0]);
-        return (seeds[getSeedIdx(_tokenId) / 16], palettes[getSeedIdx(_tokenId)]);
+
+        uint base_ = getSeedIdx(_tokenId) * COLORS;
+
+        uint totalColor_ = random(_tokenId, PREFIX4) % COLORS;
+
+        return (seeds[getSeedIdx(_tokenId)], palettes[base_ + totalColor_]);
     }
 
     // prettier-ignore
@@ -156,7 +165,7 @@ contract FLXDescriptorPrimitive is FLXDescriptor {
         returns (string memory)
     {
         string[3] memory values = [
-            TRIBES[getSeedIdx(_tokenId) / 16],
+            TRIBES[getSeedIdx(_tokenId)],
             GUARDIAN_BEAST[random(_tokenId, PREFIX2) % GUARDIAN_BEAST.length],
             FELIX_WORD[random(_tokenId, PREFIX3) % FELIX_WORD.length]
         ];

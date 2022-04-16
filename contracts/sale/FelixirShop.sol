@@ -14,18 +14,19 @@ contract FelixirShop is Ownable, ReentrancyGuard {
     address public immutable felixirs;
     address public immutable treasury;
 
-    uint256 public constant tokenPrice = 1 ether;
+//TODO yamaura
+    uint256 public constant tokenPrice = 0.1 ether;
 
     uint16 public constant totalSupply = 4000;
     uint16 public counter = 1;
 
-    bool public isSaleNow = false;
+    bool public isSaleNow;
 
     constructor (address _felixirs, address _treasury) {
         felixirs = _felixirs;
         treasury = _treasury;
         
-        setSale(true);
+        setSale(false);
     }
 
     /// @notice Users can purchase a token with this function
