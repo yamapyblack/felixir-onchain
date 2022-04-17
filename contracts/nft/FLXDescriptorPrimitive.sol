@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: CC0
+// SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.13;
 
@@ -15,43 +15,43 @@ contract FLXDescriptorPrimitive is FLXDescriptor {
     constructor() {}
 
     uint8 constant CHARA = 12;
-    uint constant COLORS = 16;
+    uint constant COLORS = 64;
     string constant PREFIX1 = "PREFIX1";
     string constant PREFIX2 = "PREFIX2";
     string constant PREFIX3 = "PREFIX3";
     string constant PREFIX4 = "PREFIX4";
 
-    string[] ATTRIBUTES = ['tribe', 'guardian beast', 'felix word'];
+    string[] ATTRIBUTES = ['name', 'tribe', 'guardian beast', 'felix word'];
     bool[] IS_INT = [false, false, false, false];
 
     string[] NAMES = [
-        'name1',
-        'name2',
-        'name3',
-        'name4',
-        'name5',
-        'name6',
-        'name7',
-        'name8',
-        'name9',
-        'name10',
-        'name11',
-        'name12'
+        'Satoshi',
+        'Kyle',
+        'Tiana',
+        'Nika',
+        'Leafus',
+        'Awen',
+        'Hawkie',
+        'Carabinero',
+        'Gan-G',
+        'Frey',
+        'Mia',
+        'Philan'
     ];
 
     string[] DESCRIPTIONS = [
-        'de1',
-        'de2',
-        'de3',
-        'de4',
-        'de5',
-        'de6',
-        'de7',
-        'de8',
-        'de9',
-        'de10',
-        'de11',
-        'de12'
+        'Kind-hearted traveler. He also has a heartbreaking past.',
+        'Powerful mercenary with his longsword. His swordsman skills is his only credo.',
+        'The Princess of the Duchy of Apollon. She is Brave and fearless from a young age.',
+        'Childhood friend from Satoshi. Takes good care of but a bit over-caring.',
+        'The chief of the elves. He is trusted by his clan, but he has no mercy for other clans.',
+        'A master archer. He lives in nature and can communicate with animals.',
+        'A young warrior chief of the Garuda tribe. He is quite talkative and loud.',
+        'A mage knight who controls an evil force. He has excellent leadership skills and will show no mercy to those who oppose him.',
+        'A Dwarf who boasts of his strength. He is brave and courageous, and has no second thoughts.',
+        'A cheerful, talkative dwarf. He is very particular about his money.',
+        'Has sharp claws and can climb high places without difficulty. Also nimble and have excellent information-gathering abilities.',
+        'He has a mild-mannered personality. He is skilled in the art of protecting his friends.'
     ];
 
     string[] TRIBES = [
@@ -122,7 +122,7 @@ contract FLXDescriptorPrimitive is FLXDescriptor {
         override
         returns (string memory)
     {
-        return string(abi.encodePacked(NAMES[getSeedIdx(_tokenId)], " #", _tokenId.toString()));
+        return string(abi.encodePacked(NAMES[getSeedIdx(_tokenId)], " FelixirNFT #", _tokenId.toString()));
     }
 
     function generateDescription(uint256 _tokenId)
@@ -164,7 +164,8 @@ contract FLXDescriptorPrimitive is FLXDescriptor {
         override
         returns (string memory)
     {
-        string[3] memory values = [
+        string[4] memory values = [
+            NAMES[getSeedIdx(_tokenId)],
             TRIBES[getSeedIdx(_tokenId)],
             GUARDIAN_BEAST[random(_tokenId, PREFIX2) % GUARDIAN_BEAST.length],
             FELIX_WORD[random(_tokenId, PREFIX3) % FELIX_WORD.length]

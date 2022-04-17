@@ -5,7 +5,7 @@ import { FelixirShop } from "../../typechain/FelixirShop"
 async function main() {
 
   const FelixirShop = await ethers.getContractFactory("FelixirShop");
-  const c0 = await FelixirShop.deploy(Addr.FLXPrimitive, Addr.Deployer);
+  const c0 = await FelixirShop.deploy(Addr.FLXPrimitive, Addr.FelixirExecutor);
   await c0.deployed();
   console.log("deployed to:", c0.address);
 

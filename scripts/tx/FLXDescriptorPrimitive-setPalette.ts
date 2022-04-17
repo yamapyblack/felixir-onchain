@@ -1,8 +1,9 @@
 import { ethers } from "hardhat";
 import { Addr } from "../addresses"
 import { Palettes } from "../palette"
-import { palette3072 } from "../palette3072"
-import { palette192 } from "../palette192"
+// import { palette3072 } from "../palette3072"
+// import { palette192 } from "../palette192"
+import { palette768 } from "../palette768"
 import { encode } from "../svg/encoder";
 import { FLXDescriptorPrimitive } from "../../typechain/FLXDescriptorPrimitive"
 import { promises as fs } from "fs";
@@ -11,27 +12,30 @@ const OUT_PALETTE_FILE = "images/out_palette.txt";
 const OUT_PALETTE_FILE2 = "images/out_palette2.txt";
 
 async function main() {
+  // outPalette768()
+  // return
+
   const c0 = (await ethers.getContractAt("FLXDescriptorPrimitive", Addr.FLXDescriptorPrimitive)) as FLXDescriptorPrimitive
 
   let indexes_ = []
   let palettes_ = []
 
-  for(let i = 0; i < palette192.length; i++){
+  const bundle = 16
+
+  for(let i = 0; i < palette768.length; i++){
     console.log("i",i)
     indexes_.push(i)
-    palettes_.push(palette192[i])
+    palettes_.push(palette768[i])
 
     // await c0.addBulkColorsToPalette(i, palette3072[i]);
 
-    if(i % 4 == 3){
-      console.log("i % 4",i % 4)
+    if(i % bundle == (bundle - 1)){
+      console.log("bundle")
       await c0.addBulkBulkColorsToPalette(indexes_, palettes_);
       indexes_ = []
       palettes_ = []    
     }
-
   }
-
 }
 
 async function inputSVGFile() {
@@ -92,8 +96,24 @@ async function outPalette2() {
         }
     }
   }
-
 }
+
+async function outPalette768() {
+  for(let k = 0; k < Palettes.length; k++){
+     
+    for(let l = 0; l < 4; l++){
+      for(let m = 0; m < 4; m++){
+        for(let n = 0; n < 4; n++){
+            console.log(Palettes[k][l][0],Palettes[k][l][1],Palettes[k][m][2],Palettes[k][n][3])
+            await fs.appendFile(OUT_PALETTE_FILE2, 
+               '""' + Palettes[k][l][0] + '",""' + Palettes[k][l][1] + '",""' + Palettes[k][m][2] + '",""' + Palettes[k][n][3] + '",' + "\n"
+            );
+        }
+      }
+    }
+  }
+}
+
 
 main().catch((error) => {
   console.error(error);

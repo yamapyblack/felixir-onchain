@@ -16,8 +16,9 @@ async function main() {
     const encodeJson = await encode(INPUT_SVG_FILE_ALL);
 
     const seed = encodeJson.images.root[0].data;
-    console.log(seed)
-    await c0.setSeed(i,seed)
+    // console.log(seed)
+    const tx = await c0.setSeed(i,seed)
+    console.log(tx)    
   }
 
 }
