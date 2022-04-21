@@ -27,6 +27,9 @@ describe("ERC721Junction-test", async () => {
         const ERC721JunctionMock = await ethers.getContractFactory("ERC721JunctionMock")
         contract = (await ERC721JunctionMock.deploy()) as ERC721JunctionMock
         await contract.deployed()
+
+        //whiteList
+        await contract.setWhiteList(c1.address, true)
     })
 
     describe("unJunction", async () => {
@@ -43,6 +46,17 @@ describe("ERC721Junction-test", async () => {
             await c1.mint(owner.address, cTokenId)
 
             await expect(contract.junction(pTokenId, [{addr: c1.address,id: cTokenId}])).revertedWith("ERC721Junction: junction by only parent tokens owner")
+        })
+
+        it("fail whiteList", async () => {
+            await expect(contract.connect(addr1).setWhiteList(c1.address, false)).reverted
+
+            await contract.setWhiteList(c1.address, false)
+
+            await contract.mint(owner.address, pTokenId)
+            await c1.mint(owner.address, cTokenId)
+
+            await expect(contract.junction(pTokenId, [{addr: c1.address,id: cTokenId}])).revertedWith("ERC721Junction: not whiteList")
         })
 
         it("fail junction by not owner(child)", async () => {

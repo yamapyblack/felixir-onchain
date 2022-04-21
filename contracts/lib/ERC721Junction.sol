@@ -4,10 +4,17 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "../interfaces/IERC721Junction.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-abstract contract ERC721Junction is IERC721Junction, ERC721 {
+abstract contract ERC721Junction is IERC721Junction, ERC721, Ownable {
     /** mapping parentTokenId => ChildToken[] */ 
     mapping(uint256 => IERC721Junction.ChildToken[]) children;
+
+    mapping(address => bool) whiteList;
+
+    function setWhiteList(address _addr, bool _is) external onlyOwner{
+        whiteList[_addr] = _is;
+    }
 
     function getChildren(uint256 parentTokenId)
         external
@@ -28,6 +35,11 @@ abstract contract ERC721Junction is IERC721Junction, ERC721 {
         );
 
         for (uint8 i = 0; i < childrenToken.length; i++) {
+            require(
+                whiteList[childrenToken[i].addr],
+                "ERC721Junction: not whiteList"
+            );
+
             require(
                 msg.sender == IERC721(childrenToken[i].addr).ownerOf(childrenToken[i].id),
                 "ERC721Junction: junction by only child tokens owner"
