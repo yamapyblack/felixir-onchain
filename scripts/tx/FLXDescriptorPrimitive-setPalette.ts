@@ -1,4 +1,5 @@
 import { ethers } from "hardhat";
+import { Addresses, KmsSigner } from "../common"
 import { Addr } from "../addresses"
 import { Palettes } from "../palette"
 // import { palette3072 } from "../palette3072"
@@ -12,6 +13,8 @@ const OUT_PALETTE_FILE = "images/out_palette.txt";
 const OUT_PALETTE_FILE2 = "images/out_palette2.txt";
 
 async function main() {
+  const signer = KmsSigner()
+
   // outPalette768()
   // return
 
@@ -31,7 +34,7 @@ async function main() {
 
     if(i % bundle == (bundle - 1)){
       console.log("bundle")
-      await c0.addBulkBulkColorsToPalette(indexes_, palettes_);
+      await c0.connect(signer).addBulkBulkColorsToPalette(indexes_, palettes_);
       indexes_ = []
       palettes_ = []    
     }
