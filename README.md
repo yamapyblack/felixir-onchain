@@ -21,7 +21,14 @@ These two contracts are needed to be related. After depoloying both, need to do 
 
 ### How to create images
 
-Creators make 32x32 svg images and set them on Descriptor contract. In fact, necessaries are `seed` and `pallet`. Seed and Pallet define pixel and color. This concept is inspired by Nouns DAO, so read below in detail.
+Creators make 32x32 svg images and set them on Descriptor contract. In fact, necessaries are `seed` and `pallet`. Seed and Pallet define pixel and color. 
+The encoder script below can generate `seed` and `pallet` from png file (this png size must be 32x32)
+
+*set INPUT_SVG_FILE on filePath
+
+https://github.com/yamapyblack/felixir-onchain/blob/main/scripts/svg/encoder.ts
+
+This concept is inspired by Nouns DAO, so read below in detail.
 
 https://nouns.center/dev/generate-on-chain-noun
 
