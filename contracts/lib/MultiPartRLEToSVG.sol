@@ -15,7 +15,7 @@ library MultiPartRLEToSVG {
     }
 
     struct Rect {
-        uint8 length;
+        uint8 len;
         uint8 colorIndex;
     }
 
@@ -30,9 +30,10 @@ library MultiPartRLEToSVG {
     // prettier-ignore
     function generateSVGRects(bytes memory seed, string[] memory palette)
         internal
-        pure
+        view
         returns (string memory svg)
     {
+        // console.log("yama1");
         string[33] memory lookup = [
             '0', '10', '20', '30', '40', '50', '60', '70', 
             '80', '90', '100', '110', '120', '130', '140', '150', 
@@ -43,40 +44,88 @@ library MultiPartRLEToSVG {
         string memory rects;
 
         DecodedImage memory image = _decodeRLEImage(seed);
+        // console.log("yama1_1");
 
         uint256 currentX = image.bounds.left;
         uint256 currentY = image.bounds.top;
-        uint256 cursor;
-        string[16] memory buffer;
+        // uint256 cursor;
+        string[4] memory buffer;
+
+        console.log("image.bounds.top", image.bounds.top);
+        console.log("image.bounds.right", image.bounds.right);
+        console.log("image.bounds.bottom", image.bounds.bottom);
+        console.log("image.bounds.left", image.bounds.left);
 
         string memory part;
+        console.log("image.rects.length", image.rects.length); 
         for (uint256 i = 0; i < image.rects.length; i++) {
+            // console.log("i", i);
             Rect memory rect = image.rects[i];
-            if (rect.colorIndex != 0) {
-                buffer[cursor] = lookup[rect.length];          // width
-                buffer[cursor + 1] = lookup[currentX];         // x
-                buffer[cursor + 2] = lookup[currentY];         // y
-                buffer[cursor + 3] = palette[rect.colorIndex - 1]; // color
 
-                cursor += 4;
+            uint _surplus;
+            if(currentX + rect.len > image.bounds.right){
+                _surplus = currentX + rect.len - image.bounds.right;
 
-                if (cursor >= 16) {
-                    part = string(abi.encodePacked(part, _getChunk(cursor, buffer)));
-                    cursor = 0;
+                if(rect.colorIndex != 0){
+                    // console.log("cursor", cursor);
+                    // console.log("rect.len", rect.len);
+                    // console.log("currentX", currentX);
+                    // console.log("currentY", currentY);
+                    // console.log("rect.colorIndex", rect.colorIndex);
+                    buffer[0] = lookup[rect.len - _surplus];          // width
+                    buffer[1] = lookup[currentX];         // x
+                    buffer[2] = lookup[currentY];         // y
+                    buffer[3] = palette[rect.colorIndex]; // color
+                    // console.log("hoge2");
+                    part = string(abi.encodePacked(part, _getChunk(buffer)));
                 }
-            }
-
-            currentX += rect.length;
-            if (currentX == image.bounds.right) {
                 currentX = image.bounds.left;
                 currentY++;
+                if(rect.colorIndex != 0){
+                    // console.log("cursor", cursor);
+                    // console.log("rect.len", rect.len);
+                    // console.log("currentX", currentX);
+                    // console.log("currentY", currentY);
+                    // console.log("rect.colorIndex", rect.colorIndex);
+                    buffer[0] = lookup[_surplus];          // width
+                    buffer[1] = lookup[currentX];         // x
+                    buffer[2] = lookup[currentY];         // y
+                    buffer[3] = palette[rect.colorIndex]; // color
+                    // console.log("hoge2");
+                    part = string(abi.encodePacked(part, _getChunk(buffer)));
+                }
+                currentX += _surplus;
+
+            }else{
+                if(rect.colorIndex != 0){
+                    // console.log("cursor", cursor);
+                    // console.log("rect.len", rect.len);
+                    // console.log("currentX", currentX);
+                    // console.log("currentY", currentY);
+                    // console.log("rect.colorIndex", rect.colorIndex);
+                    buffer[0] = lookup[rect.len];          // width
+                    buffer[1] = lookup[currentX];         // x
+                    buffer[2] = lookup[currentY];         // y
+                    buffer[3] = palette[rect.colorIndex]; // color
+                    // console.log("hoge2");
+                    part = string(abi.encodePacked(part, _getChunk(buffer)));
+                }
+                // console.log("hoge3");
+
+                currentX += rect.len;
+                // console.log("rect.len", rect.len);
+                // if (currentX - image.bounds.left == image.width) {
+                if (currentX == image.bounds.right) {
+                    console.log("currentX is back", currentX);
+                    currentX = image.bounds.left;
+                    currentY++;
+                }
             }
         }
 
-        if (cursor != 0) {
-            part = string(abi.encodePacked(part, _getChunk(cursor, buffer)));
-        }
+        // part = string(abi.encodePacked(part, _getChunk(buffer)));
         rects = string(abi.encodePacked(rects, part));
+        // console.log("yama2");
 
         return rects;
     }
@@ -85,42 +134,40 @@ library MultiPartRLEToSVG {
      * @notice Return a string that consists of all rects in the provided `buffer`.
      */
     // prettier-ignore
-    function _getChunk(uint256 cursor, string[16] memory buffer) private pure returns (string memory) {
+    function _getChunk(string[4] memory buffer) private pure returns (string memory) {
         string memory chunk;
-        for (uint256 i = 0; i < cursor; i += 4) {
-            chunk = string(
-                abi.encodePacked(
-                    chunk,
-                    '<rect width="', buffer[i], '" height="10" x="', buffer[i + 1], '" y="', buffer[i + 2], '" fill="#', buffer[i + 3], '" />'
-                )
-            );
-        }
+        chunk = string(
+            abi.encodePacked(
+                chunk,
+                '<rect width="', buffer[0], '" height="10" x="', buffer[1], '" y="', buffer[2], '" fill="#', buffer[3], '" />'
+            )
+        );
         return chunk;
     }
 
     /**
-     * @notice Decode a single RLE compressed image into a `DecodedImage`.
+     * @notice Decode a single RLE compressed seed into a `DecodedImage`.
      */
-    function _decodeRLEImage(bytes memory image)
+    function _decodeRLEImage(bytes memory seed)
         private
         pure
         returns (DecodedImage memory)
     {
-        // uint8 paletteIndex = uint8(image[0]);
+        // uint8 paletteIndex = uint8(seed[0]);
 
         ContentBounds memory bounds = ContentBounds({
-            top: uint8(image[1]),
-            right: uint8(image[2]),
-            bottom: uint8(image[3]),
-            left: uint8(image[4])
+            top: uint8(seed[1]),
+            right: uint8(seed[2]),
+            bottom: uint8(seed[3]),
+            left: uint8(seed[4])
         });
 
         uint256 cursor;
-        Rect[] memory rects = new Rect[]((image.length - 5) / 2);
-        for (uint256 i = 5; i < image.length; i += 2) {
+        Rect[] memory rects = new Rect[]((seed.length - 5) / 2);
+        for (uint256 i = 5; i < seed.length; i += 2) {
             rects[cursor] = Rect({
-                length: uint8(image[i]),
-                colorIndex: uint8(image[i + 1])
+                len: uint8(seed[i]),
+                colorIndex: uint8(seed[i + 1])
             });
             cursor++;
         }
