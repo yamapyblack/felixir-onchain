@@ -12,7 +12,8 @@ import { NFTDescriptor } from "../../typechain/NFTDescriptor";
 
 const OUT_SVG_FILE = "images/test/encoder.svg";
 // const INPUT_SVG_FILE = "images/test/image5.png";
-const INPUT_SVG_FILE = "images/test/image_soard2.png";
+// const INPUT_SVG_FILE = "images/test/image_soard2.png";
+const INPUT_SVG_FILE = "images/test/wpn0012_002.png";
 const INPUT_SVG_FILE2 = "images/test/image6.png";
 
 describe("encoder-test", async () => {
@@ -42,22 +43,6 @@ describe("encoder-test", async () => {
   });
 
   describe("test", async () => {
-    // it("success1", async () => {
-    //   const encodeJson = await encode(INPUT_SVG_FILE);
-
-    //   const seed = encodeJson.images.root[0].data;
-    //   console.log(seed);
-
-    //   const palettes = encodeJson.palette;
-    //   palettes.shift(); // Nounsのだと先頭が空になるため、先頭削除
-    //   console.log(palettes);
-
-    //   c1.setSeed(0, seed);
-
-    //   // const tx = await c0.connect(signer).setSeed(i, seed);
-    //   // console.log(tx);
-    // });
-
     it("success weapon", async () => {
       // const palettes = ["", "ffffff", "181b1d", "550e11", "0e6775"];
       // const seed =
@@ -78,16 +63,8 @@ describe("encoder-test", async () => {
 
       const svg = await c1.generateImage(0);
       const svg2 = ethers.utils.toUtf8String(ethers.utils.base64.decode(svg));
-      // console.log(svg2);
+      console.log(svg2);
       await fs.writeFile(OUT_SVG_FILE, svg2);
-
-      // const svg1 = svg.split(",")[1];
-      // const svg2 = ethers.utils.toUtf8String(ethers.utils.base64.decode(svg1));
-      // const svg3 = svg2.split(",")[3];
-      // const svg4 = ethers.utils.toUtf8String(ethers.utils.base64.decode(svg3));
-      // console.log(svg4);
-
-      // await fs.writeFile(OUT_SVG_FILE, svg4);
     });
   });
 });

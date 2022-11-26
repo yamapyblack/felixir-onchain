@@ -33,7 +33,6 @@ library MultiPartRLEToSVG {
         view
         returns (string memory svg)
     {
-        // console.log("yama1");
         string[33] memory lookup = [
             '0', '10', '20', '30', '40', '50', '60', '70', 
             '80', '90', '100', '110', '120', '130', '140', '150', 
@@ -44,27 +43,24 @@ library MultiPartRLEToSVG {
         string memory rects;
 
         DecodedImage memory image = _decodeRLEImage(seed);
-        // console.log("yama1_1");
 
         uint256 currentX = image.bounds.left;
         uint256 currentY = image.bounds.top;
-        // uint256 cursor;
         string[4] memory buffer;
 
-        console.log("image.bounds.top", image.bounds.top);
-        console.log("image.bounds.right", image.bounds.right);
-        console.log("image.bounds.bottom", image.bounds.bottom);
-        console.log("image.bounds.left", image.bounds.left);
+        // console.log("image.bounds.top", image.bounds.top);
+        // console.log("image.bounds.right", image.bounds.right);
+        // console.log("image.bounds.bottom", image.bounds.bottom);
+        // console.log("image.bounds.left", image.bounds.left);
 
         string memory part;
-        console.log("image.rects.length", image.rects.length); 
+        // console.log("image.rects.length", image.rects.length); 
         for (uint256 i = 0; i < image.rects.length; i++) {
             // console.log("i", i);
             Rect memory rect = image.rects[i];
 
-            uint _surplus;
             if(currentX + rect.len > image.bounds.right){
-                _surplus = currentX + rect.len - image.bounds.right;
+                uint256 _surplus = currentX + rect.len - image.bounds.right;
 
                 if(rect.colorIndex != 0){
                     // console.log("cursor", cursor);
@@ -72,49 +68,34 @@ library MultiPartRLEToSVG {
                     // console.log("currentX", currentX);
                     // console.log("currentY", currentY);
                     // console.log("rect.colorIndex", rect.colorIndex);
-                    buffer[0] = lookup[rect.len - _surplus];          // width
+                    buffer[0] = lookup[rect.len - _surplus];// width
                     buffer[1] = lookup[currentX];         // x
                     buffer[2] = lookup[currentY];         // y
                     buffer[3] = palette[rect.colorIndex]; // color
-                    // console.log("hoge2");
                     part = string(abi.encodePacked(part, _getChunk(buffer)));
                 }
                 currentX = image.bounds.left;
                 currentY++;
+                // next line
                 if(rect.colorIndex != 0){
-                    // console.log("cursor", cursor);
-                    // console.log("rect.len", rect.len);
-                    // console.log("currentX", currentX);
-                    // console.log("currentY", currentY);
-                    // console.log("rect.colorIndex", rect.colorIndex);
                     buffer[0] = lookup[_surplus];          // width
                     buffer[1] = lookup[currentX];         // x
                     buffer[2] = lookup[currentY];         // y
                     buffer[3] = palette[rect.colorIndex]; // color
-                    // console.log("hoge2");
                     part = string(abi.encodePacked(part, _getChunk(buffer)));
                 }
                 currentX += _surplus;
 
             }else{
                 if(rect.colorIndex != 0){
-                    // console.log("cursor", cursor);
-                    // console.log("rect.len", rect.len);
-                    // console.log("currentX", currentX);
-                    // console.log("currentY", currentY);
-                    // console.log("rect.colorIndex", rect.colorIndex);
                     buffer[0] = lookup[rect.len];          // width
                     buffer[1] = lookup[currentX];         // x
                     buffer[2] = lookup[currentY];         // y
                     buffer[3] = palette[rect.colorIndex]; // color
-                    // console.log("hoge2");
                     part = string(abi.encodePacked(part, _getChunk(buffer)));
                 }
-                // console.log("hoge3");
 
                 currentX += rect.len;
-                // console.log("rect.len", rect.len);
-                // if (currentX - image.bounds.left == image.width) {
                 if (currentX == image.bounds.right) {
                     console.log("currentX is back", currentX);
                     currentX = image.bounds.left;
@@ -123,10 +104,7 @@ library MultiPartRLEToSVG {
             }
         }
 
-        // part = string(abi.encodePacked(part, _getChunk(buffer)));
         rects = string(abi.encodePacked(rects, part));
-        // console.log("yama2");
-
         return rects;
     }
 

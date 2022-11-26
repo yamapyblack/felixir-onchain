@@ -28,7 +28,7 @@ const config: HardhatUserConfig = {
     astar: {
       url: 'https://rpc.astar.network:8545',
       chainId: 592,
-      accounts: accounts(),
+      //accounts: accounts(),
     },
   },
   solidity: {
