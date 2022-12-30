@@ -1,34 +1,35 @@
 import { HardhatUserConfig } from "hardhat/config";
-import { HttpNetworkAccountsConfig } from "hardhat/types"
+import { HttpNetworkAccountsConfig } from "hardhat/types";
 
-import "solc"
-import '@typechain/hardhat'
-import '@nomiclabs/hardhat-ethers'
-import '@nomiclabs/hardhat-waffle'
+import "solc";
+import "@typechain/hardhat";
+import "@nomiclabs/hardhat-ethers";
+import "@nomiclabs/hardhat-waffle";
 import "@nomiclabs/hardhat-etherscan";
-import "hardhat-gas-reporter"
+import "hardhat-gas-reporter";
 
 const accounts = (): HttpNetworkAccountsConfig => {
   if (!process.env.PRIV_KEY) {
-    return "remote"
+    return "remote";
   }
-  return [process.env.PRIV_KEY!]
-}
+  return [process.env.PRIV_KEY!];
+};
 
 const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
   networks: {
-    hardhat: {
-    },
+    hardhat: {},
     shiden: {
-      url: 'https://shiden.api.onfinality.io/public',
+      url: "https://shiden.api.onfinality.io/public",
       chainId: 336,
       accounts: accounts(),
     },
     astar: {
-      url: 'https://rpc.astar.network:8545',
+      // url: `https://astar-mainnet.g.alchemy.com/v2/${process.env.ETHERSCAN_API_KEY}`,
+      url: "https://astar.public.blastapi.io",
+      // url: "https://rpc.astar.network:8545",
       chainId: 592,
-      //accounts: accounts(),
+      accounts: accounts(),
     },
   },
   solidity: {
@@ -36,26 +37,26 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 200
-      }
-    }
+        runs: 200,
+      },
+    },
   },
   paths: {
     sources: "./contracts",
     tests: "./test",
     cache: "./cache",
-    artifacts: "./artifacts"
+    artifacts: "./artifacts",
   },
   mocha: {
-    timeout: 20000
+    timeout: 20000,
   },
   etherscan: {
-    apiKey: `${process.env.ETHERSCAN_API_KEY}`
+    apiKey: `${process.env.ETHERSCAN_API_KEY}`,
   },
   gasReporter: {
-    currency: 'MATIC',
+    currency: "MATIC",
     gasPrice: 30,
-    enabled: false
+    enabled: false,
   },
 };
 

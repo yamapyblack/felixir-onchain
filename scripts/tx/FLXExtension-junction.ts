@@ -9,7 +9,8 @@ async function main() {
   const signer = KmsSigner();
 
   const parentTokenId = 598;
-  const childTokenId = 2;
+  // const parentTokenId = 1613;
+  const childTokenId = 17;
 
   const c0 = (await ethers.getContractAt(
     "FLXPrimitiveV2",
