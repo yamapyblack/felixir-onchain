@@ -7,13 +7,45 @@ import { FLXExtension } from "../../typechain/FLXExtension";
 
 // const INPUT_SVG_FILE = "images/test/image_soard2.png";
 // const INPUT_SVG_FILE = "images/test/wpn0012_002.png";
-const INPUT_SVG_FILE = "images/test/hat0003_002.png";
+// const INPUT_SVG_FILE = "images/test/hat0003_002.png";
+// const INPUT_SVG_FILE = "images/test/IMG_0553_mini.png";
+
+const tokenId = 83;
+// const to = Addr.Deployer;
+const to = "0x9c0F9A4A14C0e6E7D3a2EF084aef986f588da6E5";
+
+// const INPUT_SVG_FILE = "images/weapons/wpn0001_002.png";
+// const INPUT_SVG_FILE = "images/weapons/wpn0005_002.png";
+// const INPUT_SVG_FILE = "images/weapons/wpn0007_001.png";
+// const INPUT_SVG_FILE = "images/weapons/wpn0011_001.png";
+// const INPUT_SVG_FILE = "images/weapons/wpn0012_002.png";
+// const INPUT_SVG_FILE = "images/weapons/hat0001_001.png";
+// const INPUT_SVG_FILE = "images/weapons/hat0001_002.png";
+// const INPUT_SVG_FILE = "images/weapons/hat0002_002.png";
+// const INPUT_SVG_FILE = "images/weapons/hat0003_002.png";
+// const INPUT_SVG_FILE = "images/weapons/sld0002_001.png";
+// const INPUT_SVG_FILE = "images/weapons/sld0004_002.png";
+// const INPUT_SVG_FILE = "images/weapons/sld0005_001.png";
+const INPUT_SVG_FILE = "images/weapons/sld0005_002.png";
+
+/*
+// const INPUT_SVG_FILE = "images/weapons_mini/wpn0001_002_m.png";
+// const INPUT_SVG_FILE = "images/weapons_mini/wpn0005_002_m.png";
+// const INPUT_SVG_FILE = "images/weapons_mini/wpn0007_001_m.png";
+// const INPUT_SVG_FILE = "images/weapons_mini/wpn0011_001_m.png";
+// const INPUT_SVG_FILE = "images/weapons_mini/wpn0012_002_m.png";
+// const INPUT_SVG_FILE = "images/weapons_mini/hat0001_001_m.png";
+// const INPUT_SVG_FILE = "images/weapons_mini/hat0001_002_m.png";
+// const INPUT_SVG_FILE = "images/weapons_mini/hat0002_002_m.png";
+// const INPUT_SVG_FILE = "images/weapons_mini/hat0003_002_m.png";
+// const INPUT_SVG_FILE = "images/weapons_mini/sld0002_001_m.png";
+// const INPUT_SVG_FILE = "images/weapons_mini/sld0004_002_m.png";
+// const INPUT_SVG_FILE = "images/weapons_mini/sld0005_001_m.png";
+// const INPUT_SVG_FILE = "images/weapons_mini/sld0005_002_m.png";
+*/
 
 async function main() {
   const signer = KmsSigner();
-
-  const tokenId = 2;
-  const to = Addr.Deployer;
 
   const c0 = (await ethers.getContractAt(
     "FLXDescriptorExtension",

@@ -1,11 +1,18 @@
 export const Addr = {
-    Deployer: "0x76D8a627dA0EA33ABDF3A922E7dA6e6ee78ab7A1",
-    NFTDescriptor: "0x4971f3d04A95eF50faFcf571eDEDE6887763Df1C",
-    FLXPrimitive: "0x1c24CbE9A306e04f12D4d1E9539048cD03f4027c",
-    FLXPrimitiveV2: "0x4ecAB8eb7964dDf3A50A1314fb1463372F802555",
-    FLXDescriptorPrimitive: "0xeCffa447041Ea35f2144517f4AAeeDdb8F9039a9",
-    FelixirShop: "0x58b639746E3e848b837F842ADf3771CFc2FCA805",
-    FelixirExecutor: "0x9e89Efc48d6dF1B890ba48EbF1df29d142606F10",
+  Deployer: "0x76D8a627dA0EA33ABDF3A922E7dA6e6ee78ab7A1",
+  NFTDescriptor: "0x4971f3d04A95eF50faFcf571eDEDE6887763Df1C",
+  FLXPrimitive: "0x1c24CbE9A306e04f12D4d1E9539048cD03f4027c",
+  FLXPrimitiveV2: "0x4ecAB8eb7964dDf3A50A1314fb1463372F802555",
+  FLXDescriptorPrimitive: "0xeCffa447041Ea35f2144517f4AAeeDdb8F9039a9",
+  FelixirShop: "0x58b639746E3e848b837F842ADf3771CFc2FCA805",
+  FelixirExecutor: "0x9e89Efc48d6dF1B890ba48EbF1df29d142606F10",
+  //extension
+  //   NFTDescriptor2: "0x3cE229a8C405CB1afd0A6300c91668e5bD0c899E",
+  //   FLXDescriptorExtension: "0xD3EA7094f2914b571d53cef8E464B74649CA457C",
+  //   FLXExtension: "0xA0981Cb04F3B4718532C95bC22c529173dd690f6",
+  NFTDescriptor2: "0x8F01623eFc279dbFE487F80feC82E611A22CB403",
+  FLXDescriptorExtension: "0xD33C4f72CF69544F195E53Fe3678b694602e7df0",
+  FLXExtension: "0xe1208c6450c2b96245e724B5Be807aeFe3CE52aF",
 };
 
 // test
@@ -16,7 +23,7 @@ export const Addr = {
 //     FLXPrimitiveV2: "0xD02ffF070D6168B159EB5d212821CBCB0B244A6d",
 //     FLXDescriptorPrimitive: "0xCB8d49e54DA94dcdf732eEfe60c0a27499d70c89",
 //     FelixirShop: "0x40581657AD36237baE43B7B2A67a63dfd31111b5",
-//     FelixirExecutor: "0x00D064D7B07088cb6A105238295068C75c83f1A5",    
+//     FelixirExecutor: "0x00D064D7B07088cb6A105238295068C75c83f1A5",
 // };
 
 //astar old
@@ -36,4 +43,3 @@ export const Addr = {
 //     FLXDescriptorPrimitive: "0x05421Fe1993581536da827f5D5C73Bb667b55dd5",
 //     FelixirShop: "",
 // };
-
