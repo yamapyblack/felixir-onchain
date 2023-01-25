@@ -10,4 +10,5 @@ yarn-debug.log*
 cache
 artifacts
 typechain
+typechain-types
 

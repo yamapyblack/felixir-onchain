@@ -26,8 +26,10 @@ const config: HardhatUserConfig = {
     },
     astar: {
       // url: `https://astar-mainnet.g.alchemy.com/v2/${process.env.ETHERSCAN_API_KEY}`,
-      url: "https://astar.public.blastapi.io",
+      // url: "https://astar.public.blastapi.io",
       // url: "https://rpc.astar.network:8545",
+      // url: `https://astar-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_KEY}`,
+      url: "https://evm.astar.network",
       chainId: 592,
       accounts: accounts(),
     },
