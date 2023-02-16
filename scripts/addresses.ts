@@ -14,6 +14,7 @@ export const Addr = {
   FLXDescriptorExtension: "0xD33C4f72CF69544F195E53Fe3678b694602e7df0",
   FLXExtension: "0xe1208c6450c2b96245e724B5Be807aeFe3CE52aF",
   FLXTemp: "0x5cA54E2b5A6AE5D7CfF7167eA5c3aa2B4a0F55a7",
+  FelixirGiveBack: "0xC602210eF84fB66225a5ddCB2897355957142f95",
 };
 
 // test
