@@ -33,7 +33,7 @@ describe("FelixirExecutor-test", async () => {
     const FelixirExecutorMock = await ethers.getContractFactory(
       "FelixirExecutorMock"
     );
-    c = await FelixirExecutorMock.deploy();
+    c = (await FelixirExecutorMock.deploy()) as FelixirExecutorMock;
     await c.deployed();
 
     await c.setLogic(owner.address);
@@ -309,7 +309,7 @@ describe("FelixirExecutor-test", async () => {
       expect(await c.queuedTransactions(encodedParam)).true;
       await owner.sendTransaction({
         to: c.address,
-        value: utils.parseEther("1"),
+        value: utils.parseEther("1000"),
       });
 
       await c.add10days();
@@ -326,7 +326,7 @@ describe("FelixirExecutor-test", async () => {
       console.log((await addr1.getBalance()).toString());
 
       expect(await addr1.getBalance()).equals(
-        BigNumber.from(bal).add(utils.parseEther("1"))
+        BigNumber.from(bal).add(utils.parseEther("1000"))
       );
     });
   });
