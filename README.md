@@ -43,7 +43,9 @@ After deployment of Extension contract, it’s necessary to apply it to whitelis
 
 Application Form
 
-[https://forms.gle/hPg8xkYexS2hgzXr7](https://forms.gle/hPg8xkYexS2hgzXr7)
+Suspended!!
+
+~~[https://forms.gle/hPg8xkYexS2hgzXr7](https://forms.gle/hPg8xkYexS2hgzXr7)~~
 
 ### How to junction
 
