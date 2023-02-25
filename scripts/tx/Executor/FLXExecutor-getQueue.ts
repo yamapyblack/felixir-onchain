@@ -22,6 +22,25 @@ export const encodeParameters = (
 };
 
 async function main() {
+  // let param_: Param = {
+  //   target: Addr.FLXTemp,
+  //   value: utils.parseEther("400000"),
+  //   signature: "",
+  //   data: encodeParameters(["address"], [Addr.FLXTemp]),
+  //   eta: 1674293493,
+  // };
+
+  // const encodedParam_ = utils.keccak256(
+  //   encodeParameters(
+  //     ["address", "uint256", "string", "bytes", "uint256"],
+  //     [param_.target, param_.value, param_.signature, param_.data, param_.eta]
+  //   )
+  // );
+  // console.log(encodedParam_);
+  //0x84e42a9a2f700f364234c84e3c2024a3e14972102c50771bf016fb746113cd7b
+
+  // return;
+
   const c0 = (await ethers.getContractAt(
     "FelixirExecutor",
     Addr.FelixirExecutor
@@ -32,16 +51,17 @@ async function main() {
     value: utils.parseEther("400000"),
     signature: "",
     data: encodeParameters(["address"], [Addr.FLXTemp]),
-    eta: Math.floor(Date.now() / 1000) + days8,
+    eta: 1677030142
   };
 
-  const tx = await c0.queueTransaction(
-    param.target,
-    param.value,
-    param.signature,
-    param.data,
-    param.eta
+  const encodedParam = utils.keccak256(
+    encodeParameters(
+      ["address", "uint256", "string", "bytes", "uint256"],
+      [param.target, param.value, param.signature, param.data, param.eta]
+    )
   );
+
+  const tx = await c0.queuedTransactions(encodedParam);
   console.log(tx);
 }
 

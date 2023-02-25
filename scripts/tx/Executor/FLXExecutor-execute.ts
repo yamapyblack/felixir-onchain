@@ -11,8 +11,6 @@ type Param = {
   eta: BigNumberish;
 };
 
-const days8 = 60 * 60 * 24 * 8;
-
 export const encodeParameters = (
   types: string[],
   values: unknown[]
@@ -32,10 +30,10 @@ async function main() {
     value: utils.parseEther("400000"),
     signature: "",
     data: encodeParameters(["address"], [Addr.FLXTemp]),
-    eta: Math.floor(Date.now() / 1000) + days8,
+    eta: 1677030142,
   };
 
-  const tx = await c0.queueTransaction(
+  const tx = await c0.executeTransaction(
     param.target,
     param.value,
     param.signature,

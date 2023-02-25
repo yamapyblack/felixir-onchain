@@ -25,7 +25,6 @@ describe("FelixirGiveBack.sol", () => {
     //mint
     await mockERC721.mint(user1.address, 1);
     await mockERC721.mint(user1.address, 2);
-    await mockERC721.mint(user1.address, 3);
     //send eth to FelixirGiveBack
     // console.log("ownerbal", (await owner.getBalance()).toString());
     await owner.sendTransaction({
@@ -75,12 +74,48 @@ describe("FelixirGiveBack.sol", () => {
 
       console.log("after", (await user1.getBalance()).toString());
     });
+    it("success many nfts", async () => {
+      await owner.sendTransaction({
+        value: utils.parseEther("600"),
+        to: felixirGiveBack.address,
+      });
+      await mockERC721.mint(user1.address, 3);
+      await mockERC721.mint(user1.address, 4);
+      await mockERC721.mint(user1.address, 5);
+      await mockERC721.mint(user1.address, 6);
+      await mockERC721.mint(user1.address, 7);
+      await mockERC721.mint(user1.address, 8);
+      await mockERC721.mint(user1.address, 9);
+      await mockERC721.mint(user1.address, 10);
+      await mockERC721
+        .connect(user1)
+        .setApprovalForAll(felixirGiveBack.address, true);
+      await felixirGiveBack
+        .connect(user1)
+        .bulkDeposit([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    });
     it("fail twice", async () => {
       await mockERC721
         .connect(user1)
         .setApprovalForAll(felixirGiveBack.address, true);
       await expect(felixirGiveBack.connect(user1).bulkDeposit([1, 1, 2])).to.be
         .reverted;
+    });
+  });
+
+  describe("withdraw()", () => {
+    it("success withdrawERC721", async () => {
+      await mockERC721
+        .connect(user1)
+        .setApprovalForAll(felixirGiveBack.address, true);
+      await felixirGiveBack.connect(user1).bulkDeposit([1, 2]);
+      await felixirGiveBack.withdrawERC721(mockERC721.address, 1);
+      expect(await mockERC721.ownerOf(1)).to.equal(owner.address);
+    });
+    it("success withdraw", async () => {
+      console.log("before", (await owner.getBalance()).toString());
+      await felixirGiveBack.withdrawEther(utils.parseEther("50"));
+      console.log("after", (await owner.getBalance()).toString());
     });
   });
 });
